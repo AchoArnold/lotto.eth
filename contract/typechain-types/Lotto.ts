@@ -25,16 +25,33 @@ import type {
 
 export interface LottoInterface extends utils.Interface {
   functions: {
+    "getBalance()": FunctionFragment;
+    "getTicketPrice()": FunctionFragment;
     "play(uint256[])": FunctionFragment;
   };
 
-  getFunction(nameOrSignatureOrTopic: "play"): FunctionFragment;
+  getFunction(
+    nameOrSignatureOrTopic: "getBalance" | "getTicketPrice" | "play"
+  ): FunctionFragment;
 
+  encodeFunctionData(
+    functionFragment: "getBalance",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getTicketPrice",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "play",
     values: [PromiseOrValue<BigNumberish>[]]
   ): string;
 
+  decodeFunctionResult(functionFragment: "getBalance", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getTicketPrice",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "play", data: BytesLike): Result;
 
   events: {};
@@ -67,11 +84,19 @@ export interface Lotto extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    getBalance(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    getTicketPrice(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     play(
       numbers: PromiseOrValue<BigNumberish>[],
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
+
+  getBalance(overrides?: CallOverrides): Promise<BigNumber>;
+
+  getTicketPrice(overrides?: CallOverrides): Promise<BigNumber>;
 
   play(
     numbers: PromiseOrValue<BigNumberish>[],
@@ -79,6 +104,10 @@ export interface Lotto extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    getBalance(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getTicketPrice(overrides?: CallOverrides): Promise<BigNumber>;
+
     play(
       numbers: PromiseOrValue<BigNumberish>[],
       overrides?: CallOverrides
@@ -88,6 +117,10 @@ export interface Lotto extends BaseContract {
   filters: {};
 
   estimateGas: {
+    getBalance(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getTicketPrice(overrides?: CallOverrides): Promise<BigNumber>;
+
     play(
       numbers: PromiseOrValue<BigNumberish>[],
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
@@ -95,6 +128,10 @@ export interface Lotto extends BaseContract {
   };
 
   populateTransaction: {
+    getBalance(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getTicketPrice(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     play(
       numbers: PromiseOrValue<BigNumberish>[],
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
